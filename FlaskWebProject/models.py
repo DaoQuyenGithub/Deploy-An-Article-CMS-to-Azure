@@ -7,7 +7,7 @@ import string, random
 from werkzeug.utils import secure_filename
 from flask import flash
 
-blob_container = app.config['images']
+blob_container = app.config['BLOB_CONTAINER']
 # blob_service = BlockBlobService(account_name=app.config['BLOB_ACCOUNT'], account_key=app.config['BLOB_STORAGE_KEY'])
 blob_service = BlobServiceClient.from_connection_string('DefaultEndpointsProtocol=https;AccountName=cmsudacity;AccountKey=apamCvQkOTTp6NCT8DQ7wXb8UPpZ1HfvhB7xBDjgoKzEMqdEED+gcuF4Klb5DSK1/t6hLMlQBMBw+AStGFkd+Q==;EndpointSuffix=core.windows.net')
 

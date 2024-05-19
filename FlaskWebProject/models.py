@@ -9,7 +9,7 @@ from flask import flash
 
 blob_container = app.config['images']
 # blob_service = BlockBlobService(account_name=app.config['BLOB_ACCOUNT'], account_key=app.config['BLOB_STORAGE_KEY'])
-blob_service = BlobServiceClient.from_connection_string('DefaultEndpointsProtocol=https;AccountName=cmsudacity;AccountKey=VGa4uPwlqELSUlynZaLCYxEqkYFM/PS461VK7BiygfuoOCKPPqLuGnJHaZnmm8Pp7kDYvq68LITe+AStNbNvgg==;EndpointSuffix=core.windows.net')
+blob_service = BlobServiceClient.from_connection_string('DefaultEndpointsProtocol=https;AccountName=cmsudacity;AccountKey=apamCvQkOTTp6NCT8DQ7wXb8UPpZ1HfvhB7xBDjgoKzEMqdEED+gcuF4Klb5DSK1/t6hLMlQBMBw+AStGFkd+Q==;EndpointSuffix=core.windows.net')
 
 def id_generator(size=32, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -58,9 +58,11 @@ class Post(db.Model):
             Randomfilename = id_generator();
             filename = Randomfilename + '.' + fileextension;
             try:
-                blob_service.create_blob_from_stream(blob_container, filename, file)
+                blob_client = blob_service.get_blob_client(container=blob_container, blob=filename)
+                blob_client.upload_blob(file)
                 if(self.image_path):
-                    blob_service.delete_blob(blob_container, self.image_path)
+                    blob_client = blob_service.get_blob_client(container=blob_container, blob=filename)
+                    blob_client.delete_blob()
             except Exception:
                 flash(Exception)
             self.image_path =  filename
